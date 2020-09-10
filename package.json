@@ -1,6 +1,6 @@
 {
   "name": "@lets/publish",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "description": "🛵 Publish only if this version was not already published",
   "keywords": [
     "npm",
@@ -16,7 +16,8 @@
   },
   "homepage": "https://omrilotan.com/publish/",
   "bin": "bin.js",
+  "man": "manual/man.1",
   "dependencies": {
-    "async-execute": "^1.1.0"
+    "async-execute": "^1.2.0"
   }
 }

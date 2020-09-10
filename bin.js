@@ -27,7 +27,7 @@ async function start() {
 	const { name, version } = require(resolve('./package.json'));
 	const exec = options['dry-run']
 		? command => console.log(`$ ${command}`)
-		: command => execute(command, { pipe: true })
+		: command => execute(command, { pipe: true, exit: true })
 	;
 
 	process.stdout.write(`Check if ${name}@${version} was already published...`);

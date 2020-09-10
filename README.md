@@ -3,7 +3,7 @@
 ## 🛵 Publish only if this version was not already published
 
 ```bash
-npx @lets/publish@0
+npx @lets/publish@1
 ```
 
 Options:
@@ -15,3 +15,29 @@ npx @lets/publish [--help] [--dry-run]
 | - | -
 | --help | Print this help document
 | --dry-run | Declare what you were going to do but don't do it
+
+Github workflow example
+```yml
+name: Publish
+on:
+  - push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version:
+          - '14'
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install dependencies
+      run: npm i
+    - name: Add NPM token
+      if: github.ref == 'refs/heads/master'
+      run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    - name: Build and Publish
+      if: github.ref == 'refs/heads/master'
+      run: npx @lets/publish@1
+```
