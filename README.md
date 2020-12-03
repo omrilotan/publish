@@ -8,7 +8,7 @@ npx @lets/publish@1
 
 Options:
 ```bash
-npx @lets/publish [--help] [--dry-run]
+npx @lets/publish -- [--help] [--dry-run]
 ```
 
 | Option | Meaning
@@ -29,15 +29,13 @@ jobs:
         node-version:
           - '14'
     steps:
-    - uses: actions/checkout@v1
-    - name: Install dependencies
-      run: npm i
+    - uses: actions/checkout@v2
     - name: Add NPM token
-      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/main'
       run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
       env:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     - name: Build and Publish
-      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/main'
       run: npx @lets/publish@1
 ```

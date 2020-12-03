@@ -16,6 +16,8 @@ const options = args.reduce(
 	{}
 );
 
+const log = message => process.stdout.write(`${message}\n`);
+
 start();
 
 async function start() {
@@ -30,15 +32,22 @@ async function start() {
 		: command => execute(command, { pipe: true, exit: true })
 	;
 
-	process.stdout.write(`Check if ${name}@${version} was already published...`);
+	log(`Check if ${name}@${version} was already published...`);
 	const exists = await execute(`npm view ${name}@${version} version`);
 
 	if (exists) {
-		process.stdout.write(' ...yup\n');
+		const latest = await execute(`npm info ${name}@latest version`);
+		if (latest !== version) {
+			log(`Set ${version} as latest instead of ${latest}`);
+			await exec(`npm dist-tag add ${name}@${version} latest`)
+		} else {
+			log(' ...yup');
+		}
+
 		return;
 	}
 
-	process.stdout.write('\n');
+	log('');
 
 	await exec('npm publish');
 };
